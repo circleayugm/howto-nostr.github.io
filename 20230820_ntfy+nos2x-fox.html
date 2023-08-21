@@ -1,0 +1,83 @@
+﻿<html>
+<head>
+<title>howto-nostr.info:ntfyとnos2x-foxを利用した遅延の少ないプッシュ通知環境</title>
+</head>
+<body>
+<h1>ntfyとnos2x-foxを利用した遅延の少ないプッシュ通知環境</h1>
+
+<h3>0.この記事を書くに至った背景</h3>
+　Nostr SNSを読み書きするにあたり、いま皆さんが読んでいるこの記事は「もっと便利に通知を受け取りたい」人を対象にしています。<br>
+　具体的に書くと「Nostr SNSの通知をスマートバンド・スマートウォッチで受け取りたい」人向け。<br>
+　　<h6>(通知だけならntfyだけで受け取れますが、最大1時間程度の遅延が掛かります)</h6>
+<br>
+<h3>1.この記事より先に理解しておく必要のある内容</h3>
+　Nostr SNSの基本的な利用方法<br>
+　　公開鍵・秘密鍵についての最低限の理解<br>
+　　リレー「wss://yabu.me」の諸機能について<br>
+　NIP-07(拡張機能によるログイン)<br>
+　　PC上でnos2xを利用している方は概ね理解できているものとみなします。<br>
+　Androidアプリの基本的な利用方法<br>
+　スマートウォッチ・スマートバンドに通知を送る方法<br>
+　　筆者はMi Band7とZepp Lifeを利用していますが、ほとんどのスマートウォッチで同様のアプリが存在します。<br>
+「転んでも泣かない」胆力<br>
+<br>
+<h3>2.準備</h3>
+　お手元のAndroidに「ntfy」をインストール<br>
+<a href="https://qiita.com/youtoy/items/71cb6369f8bc7a756338">https://qiita.com/youtoy/items/71cb6369f8bc7a756338</a><br>
+<a href="https://play.google.com/store/search?q=ntfy&c=apps">https://play.google.com/store/search?q=ntfy&c=apps</a><br>
+　Androidでプッシュ通知を受け取るためのアプリ<br>
+<br>
+　お手元のAndroidに「Firefox Nightly」をインストール<br>
+<a href="https://www.mozilla.org/ja/firefox/channel/android/">https://www.mozilla.org/ja/firefox/channel/android/</a><br>
+<a href-"https://play.google.com/store/apps/details?id=org.mozilla.fenix">https://play.google.com/store/apps/details?id=org.mozilla.fenix</a><br>
+<h4>！！注意！！</h4>
+　間違えて「Firefox正式版」を入れないよう注意！<font color="#ff0000">(筆者つまづきポイント)</font><br>
+　　正式版では利用できない機能を利用します。<br>
+　　Nightly(開発途上版)を入れることに懸念のある人は、そもそもこの記事を試すべきではありません。<br>
+　　特に会社貸与端末を利用している方は要注意！<br>
+<br>
+<h3>3.具体的な設定方法(Firefox)</h3>
+「Firefox Nightly」を起動、仮アカウントのID数値を適当なメモアプリに記録<br>
+　後からでも数値は獲得できますが、先に控えておいた方が圧倒的に楽です。<font color="#ff0000">(筆者つまづきポイント)</font><br>
+　　メモアプリは何を使っても構いません。筆者はGoogle Keepを使っています。<br>
+　番号を控え忘れた場合<font color="#cccc00">(後述★)</font><font color="#ff0000">(筆者つまづきポイント)</font><br>
+「Firefox Nightly」を開発者モードに設定<br>
+　右下の「︙」を開いて、一番下にある「設定」を開く<br>
+　　設定ページのさらに一番下「Firefox Nightlyについて」を開く<br>
+　　　一番上に表示されているFirefoxロゴを5回タッチして「デバッグモード」にする<font color="#ff0000">(筆者つまづきポイント)</font><br>
+「Firefox Nightly」にて、アドオンのページを開き、nos2x-foxを検索する<br>
+<a href="https://addons.mozilla.org/">https://addons.mozilla.org/</a><br>
+　上部に検索用テキストボックスがあるので「nos2x-fox」を検索<br>
+　　nos2x-foxのアドオンページが出てくる。<br>
+　右上のアカウントIDをタッチして「コレクションを作成」を選択<font color="#ff0000">(筆者つまづきポイント)</font><br>
+　　<font color="#cccc00">★テキストボックスが3本出てくるが、一番下「カスタムURL」のところにアカウントID数値が含まれている。</font><br>
+　　コレクション名にはわかりやすいタイトルを付与。とりあえず「nos2x-fox」とする。<br>
+　　カスタムURLの後方にアドオン名、今回の場合「nos2x-fox」を入力。<br>
+　　　以上を済ませ「設定を保存」で設定を保存する。<br>
+　nos2x-foxの設定を始める。(今までのは「Firefox Nightly」にnos2x-foxを導入する方法)<font color="#ff0000">(筆者つまづきポイント)</font><br>
+　　Firefoxのトップページに戻り「︙」から「アドオン」を選択。<br>
+　　アドオンの中にnos2x-foxが設定されているハズなので、タッチで選択。<br>
+　　　<font color="#ff0000">入っていなかった場合、ここまでの過程の何処かでミスっている。</font><br>
+　　ここで「設定」をタッチすると、秘密鍵を設定する画面に移行する。<br>
+　　一番上の長いテキストボックスに秘密鍵を入力して「Save Key」で設定完了。<br>
+　　　<font color="#ff0000">ここで「Generate」を選択すると、ランダム生成された秘密鍵が登録されてしまうので要注意！</font><br>
+<br>
+<h3>4.ntfy設定</h3>
+　右下の「＋」アイコンを押して新しいプッシュ通知設定を追加<br>
+　「トピックを購読」の設定を行う<br>
+　　「トピック名」は、npub1～から始まる「公開鍵」を設定<br>
+　　　<font color="#ff0000">くれぐれもnsec1～から始まる「秘密鍵」を入れてはいけない</font><br>
+　　「他のサーバーを使用」にチェックを入れて「https://push.yabu.me」を設定</br>
+　　すべて埋めたら「購読する」を押す<br>
+　テストのために自分にreplyする・誰かにreplyを送ってもらう<br>
+　　テストで通知が飛んでこない場合、今までの流れをおさらいしつつ設定をやり直すこと<br>
+<br>
+<h3>5.スマートウォッチ・スマートバンドの設定</h3>
+　スマートウォッチのアプリから「通知を受け取るアプリ」にntfyを設定<br>
+　　ここだけは人それぞれ違うので自力でがんがれ<br>
+<br>
+<h3>6.Enjoy!</h3>
+<br>
+<h5><a href="http://www.kmonos.net/nysl/">http://www.kmonos.net/nysl/</a></h5>
+</body>
+</html>
